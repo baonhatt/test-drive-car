@@ -11,20 +11,32 @@ const HeroSection = () => (
       transition={{ duration: 1.5 }}
     >
       <div className="relative w-full h-full">
-        <iframe
-          src="https://www.youtube.com/embed/B7oOtTgYEZM?autoplay=1&mute=1&loop=1&playlist=B7oOtTgYEZM&controls=0&showinfo=0&rel=0&modestbranding=1&enablejsapi=1&version=3&playerapiid=ytplayer"
-          title="Porsche Video"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="absolute w-[100vw] h-[100vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover pointer-events-none"
-          style={{ 
-            width: '177.77777778vh',
-            height: '56.25vw',
-            minWidth: '100%',
-            minHeight: '100%'
-          }}
-        />
+        {/* Fallback image if video URL is not available */}
+        <div className="video-container">
+          <iframe
+            src="https://www.youtube.com/embed/B7oOtTgYEZM?autoplay=1&mute=1&loop=1&playlist=B7oOtTgYEZM&controls=0&showinfo=0&rel=0&modestbranding=1&enablejsapi=1&version=3&playerapiid=ytplayer"
+            title="Porsche Video" 
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="absolute w-[100vw] h-[100vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover pointer-events-none"
+            style={{
+              width: '177.77777778vh',
+              height: '56.25vw', 
+              minWidth: '100%',
+              minHeight: '100%'
+            }}
+            onError={(e) => {
+              const iframe = e.target as HTMLIFrameElement;
+              iframe.style.display = 'none';
+              const fallbackImage = document.createElement('img');
+              fallbackImage.src = '/porsche-hero.jpg';
+              fallbackImage.alt = 'Porsche Hero Image';
+              fallbackImage.className = 'absolute w-[100vw] h-[100vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover';
+              iframe.parentNode?.appendChild(fallbackImage);
+            }}
+          />
+        </div>
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
     </motion.div>
